@@ -1,0 +1,21 @@
+Package: schuylR
+Title: schuylR
+Version: 0.1
+Author: Schuyler Smith <sdsmith@iastate.edu>
+Maintainer: Schuyler Smith <sdsmith@iastate.edu>
+Description: Various R Functions I like.
+Depends:
+    R (>= 3.2.2)
+Imports:
+	uttils
+LinkingTo: 
+Suggests:
+    knitr,
+    devtools,
+    rmarkdown
+SystemRequirements:
+VignetteBuilder: knitr
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1

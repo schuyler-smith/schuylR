@@ -7,7 +7,7 @@ Description: Various R Functions I like.
 Depends:
     R (>= 3.2.2)
 Imports:
-	uttils
+	utils
 LinkingTo: 
 Suggests:
     knitr,

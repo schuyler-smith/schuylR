@@ -17,6 +17,6 @@ library(schuylR)
 
 Call			 | Use
 ---------------- | ------------------------------------------------
-row_compare      | checks if each row of two dataframes are identical
-unload_all_pacakges | un-lbraries all library'd packages from your environment
+row_compare      | checks if rows of two dataframes are identical
+unload_all_packages | un-lbraries all library'd packages from your environment (excluding base packages)
 

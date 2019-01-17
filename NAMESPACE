@@ -2,4 +2,5 @@
 
 export(row_match)
 export(unload_all_packages)
+export(update_packages)
 import(utils)

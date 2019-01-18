@@ -7,5 +7,5 @@
 update_packages()
 }
 \description{
-This function updates all CRAN packages installed in your package library.
+This function updates all packages installed in your local library
 }

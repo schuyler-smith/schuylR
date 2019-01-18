@@ -1,6 +1,6 @@
 #' update_packages
 #'
-#' This function updates all CRAN packages installed in your package library.
+#' This function updates all packages installed in your local library
 #' @usage update_packages()
 #' @import utils
 #' @export

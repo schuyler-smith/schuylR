@@ -17,6 +17,7 @@ library(schuylR)
 
 Call			 | Use
 ---------------- | ------------------------------------------------
+classify_ARG_codes | classifies ARG codes into their antibiotic resistance categories
 row_compare      | checks if rows of two dataframes are identical
 unload_all_packages | un-lbraries all library'd packages from your environment (excluding base packages)
-update_packages | updates all packages installed in your local library
+

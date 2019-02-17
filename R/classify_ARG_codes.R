@@ -32,7 +32,7 @@ classify_ARG_codes <- function(codes){
                               "mtr","tcm"),
                       Multi_drug_resistance = c("acr","opm","Pmp","ram","tol"),
                       Mupirocin = c("mup"),
-                      Oxazolidinone = c("optr"),
+                      Oxazolidinone = c("opt"),
                       Pleuromutilin = c("Tae"),
                       Peptide = c("Brucella","bac","bcr"),
                       Phenicol = c("cat","cml","cmr","cmx","fex","flo","mds","pp","opr"),

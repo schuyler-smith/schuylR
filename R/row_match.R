@@ -1,12 +1,11 @@
 #' row_match
 #'
-#' This function checks if the rows in a dataframe are contained in the other.
-#' Generally most useful for testing if the outputs of 2 functions are =.
+#' Function to check if the rows in two dataframes are contained in each other.
+#' Generally most useful for testing if the outputs of 2 functions are ==.
 #' @usage row_match(dataframe_1, dataframe_2, results = "in")
 #' @param dataframe_1 A dataframe.
 #' @param dataframe_2 A dataframe..
 #' @param results what the function should return; 'in', 'not_in', 'num_in', 'num_not_in'
-#' @keywords row_match
 #' @export
 
 row_match <- function(dataframe_1, dataframe_2, results = "in"){

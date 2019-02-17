@@ -1,8 +1,7 @@
 #' unload_all_packages
 #'
-#' This function unloads all library'd packages from your environment.
+#' Function to unload all library'd packages from your environment.
 #' @usage unload_all_packages()
-#' @keywords packages unload
 #' @import utils
 #' @export
 

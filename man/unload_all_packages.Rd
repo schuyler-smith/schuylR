@@ -7,7 +7,5 @@
 unload_all_packages()
 }
 \description{
-This function unloads all library'd packages from your environment.
+Function to unload all library'd packages from your environment.
 }
-\keyword{packages}
-\keyword{unload}

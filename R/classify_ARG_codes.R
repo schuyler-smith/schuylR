@@ -8,7 +8,7 @@
 #' @export
 #' 
 classify_ARG_codes <- function(codes){
-  arg_classes <- list(Aminocoumarins = c("AAC","bae","mdt","nov","cpx"),
+  arg_classes <- list(Aminocoumarins = c("AAC","bae","mdt","nov","cpx","Streptomyces"),
                       Aminoglycosides = c("aad","amr","ANT","APH","arm","Borrelia","mdf","npm","Pasteurella","Pvr",
                                           "rmt","spd","apm","opc"),
                       Betalactams = c("ACC","ACI","ACT","AER","AIM","AQU","BcI","BcII","BEL","BJP","BLA","CARB","CAU","Cbl",
@@ -34,9 +34,8 @@ classify_ARG_codes <- function(codes){
                       Mupirocin = c("mup"),
                       Oxazolidinone = c("opt"),
                       Pleuromutilin = c("Tae"),
-                      Peptide = c("Brucella","bac","bcr"),
-                      Phenicol = c("cat","cml","cmr","cmx","fex","flo","mds","pp","opr"),
-                      Rifampin = c("arr","iri","Rbp","rifampin","efp","rgt","rph"),
+                      Peptide = c("Brucella","bac","bcr","rpo"),
+                      Phenicol = c("cat","cml","cmr","cmx","fex","flo","mds","pp","opr","arr","iri","Rbp","rifampin","efp","rgt","rph"),
                       Streptothricin = c("sat","Str"),
                       Sulfonamides = c("sul"),
                       Tetracyclines = c("ade","mep","mgr","otr","Propionibacterium","tap","tcr","tet","evg","mux","oqx"),

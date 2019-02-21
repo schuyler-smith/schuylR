@@ -1,3 +1,5 @@
 require(devtools)
 require(Rcpp)
 require(phylosmith)
+require(data.table)
+require(stringr)

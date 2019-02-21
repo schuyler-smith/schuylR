@@ -1,83 +1,86 @@
-#' classify_ARG_codes
+#' classify_ARG_genes
 #'
-#' This function checks if the rows in a dataframe are contained in the other.
-#' Generally most useful for testing if the outputs of 2 functions are =.
-#' @usage classify_ARG_codes(codes)
-#' @param codes vector or dataframe column of ARG codes.
+#' Classifies ARGs from the \href{https://card.mcmaster.ca/home}{CARD database} using either accession number or gene name.
+#' @usage classify_ARG_genes(genes, obo = NULL)
+#' @param genes vector or dataframe column of ARG ARO accession numbers or gene names.
+#' @param obo an object processed with \code{\link{processOBO}}.
 #' @import stringr
 #' @export
-#' 
-classify_ARG_codes <- function(codes){
-  arg_classes <- list(Aminocoumarins = c("AAC","bae","mdt","nov","cpx","Streptomyces"),
-                      Aminoglycosides = c("aad","amr","ANT","APH","arm","Borrelia","mdf","npm","Pasteurella","Pvr",
-                                          "rmt","spd","apm","opc"),
-                      Betalactams = c("ACC","ACI","ACT","AER","AIM","AQU","BcI","BcII","BEL","BJP","BLA","CARB","CAU","Cbl",
-                                      "Ccr","cep","CFE","Cfx","CGB","CMY","cph","CPS","CTX","DHA","DIM","EBR","ESP",
-                                      "EXO","FEZ","FOX","GES","GOB","IMI","imi","IMP","IND","L1","KPC","LAT","LCR",
-                                      "LEN","LRA","mec","MIR","MOX","MSI","MUS","NDM","Nmc","NPS","OCH","OKP","OXA",
-                                      "PBP","PC1","PDC","PED","PER","r39","ROB","Sed","SFB","sfh","SHV","SIM","SLB",
-                                      "SMB","spg","SPM","SRT","TEM","TLA","TLE","TUS","VCC","VEB","VIM","y56","sme","Rm3",
-                                      "Axy","BUT","JOHN","THIN"),
-                      Elfamycins = c("Clostridium","fac","Planobispora"),
-                      FFA = c("far"),
-                      Fluoroquinolones = c("arl","blt","bmr","Campylobacter","Cme","emr","mfp","Mycoplasma","Neisseria",
-                                           "nor","Pseudomonas","qac","Qnr","mex","ceo","CRP","lrf","pat"),
-                      Fosfomycin = c("Fom","Fos"),
-                      Fusidic_acid = c("fus"),
-                      Glycopeptides = c("bleomycin","van"),
-                      Lipopeptides = c("arn","lpx","MCR","pho","Pmr","ros"),
-                      Metronidazole = c("msb"),
-                      MLS = c("car","cfr","chr","clb","des","eat","Ere","Erm","gim","lin","lmr","lnu","mac","mef","mel",
-                              "mgt","mph","msr","myr","ole","qep","sal","srm","tlr","vat","vga","vgb","lsa","efr","gad",
-                              "mtr","tcm"),
-                      Multi_drug_resistance = c("acr","opm","Pmp","ram","tol"),
-                      Mupirocin = c("mup"),
-                      Oxazolidinone = c("opt"),
-                      Pleuromutilin = c("Tae"),
-                      Peptide = c("Brucella","bac","bcr","rpo"),
-                      Phenicol = c("cat","cml","cmr","cmx","fex","flo","mds","pp","opr","arr","iri","Rbp","rifampin","efp","rgt","rph"),
-                      Streptothricin = c("sat","Str"),
-                      Sulfonamides = c("sul"),
-                      Tetracyclines = c("ade","mep","mgr","otr","Propionibacterium","tap","tcr","tet","evg","mux","oqx"),
-                      Thiostrepton = c(""),
-                      Trimethoprim = c("dfr","tri"),
-                      Tunicamycin = c("tmr")
-  )
-  
-  codes <- data.frame(codes, stringsAsFactors = FALSE)
-  classified_codes <- unlist(unname(apply(codes,1,FUN = function(code){
-    if(length(unlist(strsplit(code, ""))) == 4){code <- substr(code,1,3)
-    } else {code <- unlist(strsplit(code, split = "(", fixed = TRUE))[1]}
-    if(length(unlist(strsplit(code, ""))) == 4){code <- substr(code,1,3)
-    } else {code <- unlist(strsplit(code, split = "-", fixed = TRUE))[1]}
-    if(length(unlist(strsplit(code, ""))) > 4){code <- substr(code,1,3)}
-    
-    class <- names(arg_classes)[!(is.na((sapply(arg_classes, FUN = function(class_codes){
-      grep(paste0("^",code,"$"), class_codes, ignore.case=TRUE, value=FALSE)
-    }) > 0)))]
-    if(length(class) > 0){return(class)
-    } else {return("Unclassified")}
+
+classify_ARG_genes <- function(genes, obo = NULL){
+  if(!(is.null(obo))){CARD <- obo}
+  genes <- data.frame(genes, stringsAsFactors = FALSE)
+  classified_genes <- unlist(unname(apply(genes,1,FUN = function(gene){
+    if(gene %in% CARD$ID){
+      if(is.na(CARD$Resistance[gene])){return('Unclassified')}
+      return(CARD$Resistance[gene])
+    } else if(gene %in% CARD$Name){gene <- CARD$ID[which(CARD$Name %in% gene)]
+      if(is.na(CARD$Resistance[gene])){return('Unclassified')}
+      return(CARD$Resistance[gene])   
+    } else {return('Unclassified')}
   })))
-  
-  # codes <- data.frame(codes, stringsAsFactors = FALSE)
-  # classified_codes <- vector()
-  # for(i in 1:nrow(codes)){
-  #   code <- codes[i,]
-  #   if(length(unlist(strsplit(code, ""))) == 4){code <- substr(code,1,3)
-  #   } else {code <- unlist(strsplit(code, split = "(", fixed = TRUE))[1]}
-  #   if(length(unlist(strsplit(code, ""))) == 4){code <- substr(code,1,3)
-  #   } else {code <- unlist(strsplit(code, split = "-", fixed = TRUE))[1]}
-  #   if(length(unlist(strsplit(code, ""))) > 4){code <- substr(code,1,3)}
-  # 
-  #   arg_class <- names(arg_classes)[!(is.na((sapply(arg_classes, FUN = function(class_codes){
-  #     grep(paste0("^",code,"$"), class_codes, ignore.case=TRUE, value=FALSE)
-  #   }) > 0)))]
-  #   
-  #   print(arg_class)
-  #   
-  #   if(length(arg_class) == 0){arg_class <- "Unclassified"}
-  #   classified_codes[i] <- arg_class
-  # }
-  
-  return(classified_codes)
+  return(classified_genes)
 }
+
+#' processOBO
+#'
+#' Converts the aro.obo file from the \href{https://card.mcmaster.ca/home}{CARD database} into a data.table.
+#' @usage processOBO(OBO_filepath)
+#' @param OBO_filepath filepath to the aro.obo file.
+#' @import stringr
+#' @export
+
+processOBO <- function(OBO_filepath){
+  con <- file(OBO_filepath, "r")
+  OBO <- list()
+  while(TRUE){
+    line <- readLines(con, n = 1)
+    if (length(line) == 0){break}
+    if(length(grep('id: ARO', line)) > 0){
+      ID <- str_split(line, ': ')[[1]][2]
+      OBO$ID[ID] <- ID
+      OBO$Resistance[ID] <- NA
+      OBO$is_a[ID] <- NA
+      OBO$part_of[ID] <- NA
+      res <- NULL}
+    if(length(grep('name: ', line)) > 0){
+      name <- str_split(line, ': ')[[1]][2]
+      OBO$Name[ID] <- name}
+    
+    if(length(grep('confers_resistance_to', line)) > 0){
+      res <- c(res, str_split(line, '! ')[[1]][2])
+      OBO$Resistance[ID] <- gsub(' Antibiotic', '', str_to_title(paste(res, collapse = ', ')))}
+    
+    if(length(grep('is_a:', line)) > 0){
+      if(is.na(OBO$is_a[ID])){OBO$is_a[ID] <- str_split(str_split(line, ' ! ')[[1]][1], ': ')[[1]][2]}}
+    if(length(grep(': part_of', line)) > 0){
+      if(is.na(OBO$part_of[ID])){OBO$part_of[ID] <- str_split(str_split(line, ' ! ')[[1]][1], 'part_of ')[[1]][2]}}
+    if(length(grep(': regulates', line)) > 0){
+      if(is.na(OBO$part_of[ID])){OBO$part_of[ID] <- str_split(str_split(line, ' ! ')[[1]][1], 'regulates ')[[1]][2]}}
+  };  close(con)
+  for(i in 1:length(OBO$ID)){
+    gene <- OBO$ID[i]
+    for(j in 1:6){
+      if(!(is.na(OBO$Resistance[OBO$part_of[gene]])) & is.na(OBO$Resistance[gene])){
+        OBO$Resistance[gene] <- OBO$Resistance[OBO$part_of[gene]]
+      }
+      if(!(is.na(OBO$Resistance[OBO$is_a[gene]])) & is.na(OBO$Resistance[gene])){
+        OBO$Resistance[gene] <- OBO$Resistance[OBO$is_a[gene]]
+      }
+      if(is.na(OBO$Resistance[gene])){
+        OBO$part_of[gene] <- OBO$part_of[OBO$part_of[gene]]}
+      if(is.na(OBO$Resistance[gene])){
+        OBO$is_a[gene] <- OBO$is_a[OBO$is_a[gene]]}
+      if(!(is.na(OBO$Resistance[gene]))){break}
+    }
+  }
+  return(OBO)
+}
+
+# CARD <- processOBO('data/aro.obo')
+# CARD <- processOBO('data/testset.obo')
+# unique(classify_ARG_genes(test))
+# save(CARD, file = 'R/sysdata.rda')
+# 
+# OBO_filepath <- 'data/testset.obo'
+# OBO_filepath <- 'data/aro.obo'

@@ -22,6 +22,30 @@ classify_ARG_genes <- function(genes, obo = NULL){
   return(classified_genes)
 }
 
+#' classify_ARG_mechanisms
+#'
+#' Classifies ARGs mechanism of function from the \href{https://card.mcmaster.ca/home}{CARD database} using either accession number or gene name.
+#' @usage classify_ARG_mechanisms(genes, obo = NULL)
+#' @param genes vector or dataframe column of ARG ARO accession numbers or gene names.
+#' @param obo an object processed with \code{\link{processOBO}}.
+#' @import stringr
+#' @export
+
+classify_ARG_mechanisms <- function(genes, obo = NULL){
+  if(!(is.null(obo))){CARD <- obo}
+  genes <- data.frame(genes, stringsAsFactors = FALSE)
+  classified_genes <- unlist(unname(apply(genes,1,FUN = function(gene){
+    if(gene %in% CARD$ID){
+      if(is.na(CARD$Mechanism[gene])){return('Unclassified')}
+      return(CARD$Mechanism[gene])
+    } else if(gene %in% CARD$Name){gene <- CARD$ID[which(CARD$Name %in% gene)]
+    if(is.na(CARD$Mechanism[gene])){return('Unclassified')}
+    return(CARD$Mechanism[gene])   
+    } else {return('Unclassified')}
+  })))
+  return(classified_genes)
+}
+
 #' processOBO
 #'
 #' Converts the aro.obo file from the \href{https://card.mcmaster.ca/home}{CARD database} into a data.table.
@@ -42,6 +66,7 @@ processOBO <- function(OBO_filepath){
       OBO$Resistance[ID] <- NA
       OBO$is_a[ID] <- NA
       OBO$part_of[ID] <- NA
+      OBO$Mechanism[ID] <- NA
       res <- NULL}
     if(length(grep('name: ', line)) > 0){
       name <- str_split(line, ': ')[[1]][2]
@@ -57,30 +82,46 @@ processOBO <- function(OBO_filepath){
       if(is.na(OBO$part_of[ID])){OBO$part_of[ID] <- str_split(str_split(line, ' ! ')[[1]][1], 'part_of ')[[1]][2]}}
     if(length(grep(': regulates', line)) > 0){
       if(is.na(OBO$part_of[ID])){OBO$part_of[ID] <- str_split(str_split(line, ' ! ')[[1]][1], 'regulates ')[[1]][2]}}
+    if(length(grep(': participates_in', line)) > 0){
+      if(is.na(OBO$Mechanism[ID])){OBO$Mechanism[ID] <- str_split(line, ' ! ')[[1]][2]}}    
   };  close(con)
   for(i in 1:length(OBO$ID)){
     gene <- OBO$ID[i]
+    res <- OBO$Resistance[gene]
+    part_of <- OBO$part_of[gene]
+    is_a <- OBO$is_a[gene]
     for(j in 1:6){
-      if(!(is.na(OBO$Resistance[OBO$part_of[gene]])) & is.na(OBO$Resistance[gene])){
-        OBO$Resistance[gene] <- OBO$Resistance[OBO$part_of[gene]]
-      }
-      if(!(is.na(OBO$Resistance[OBO$is_a[gene]])) & is.na(OBO$Resistance[gene])){
-        OBO$Resistance[gene] <- OBO$Resistance[OBO$is_a[gene]]
-      }
-      if(is.na(OBO$Resistance[gene])){
-        OBO$part_of[gene] <- OBO$part_of[OBO$part_of[gene]]}
-      if(is.na(OBO$Resistance[gene])){
-        OBO$is_a[gene] <- OBO$is_a[OBO$is_a[gene]]}
+      if(!(is.na(OBO$Resistance[part_of])) & is.na(res)){
+        OBO$Resistance[gene] <- OBO$Resistance[part_of]}
+      if(!(is.na(OBO$Resistance[is_a])) & is.na(res)){
+        OBO$Resistance[gene] <- OBO$Resistance[is_a]}
+      if(is.na(res)){
+        part_of <- OBO$part_of[part_of]
+        is_a <- OBO$is_a[is_a]}
       if(!(is.na(OBO$Resistance[gene]))){break}
+    }
+    mech <- OBO$Mechanism[gene]
+    part_of <- OBO$part_of[gene]
+    is_a <- OBO$is_a[gene]
+    for(j in 1:10){
+      if(!(is.na(OBO$Mechanism[part_of])) & is.na(mech)){
+        OBO$Mechanism[gene] <- OBO$Mechanism[part_of]}
+      if(!(is.na(OBO$Mechanism[is_a])) & is.na(mech)){
+        OBO$Mechanism[gene] <- OBO$Mechanism[is_a]}
+      if(is.na(mech)){
+        part_of <- OBO$part_of[part_of]
+        is_a <- OBO$is_a[is_a]}
+      if(!(is.na(OBO$Mechanism[gene]))){break}
     }
   }
   return(OBO)
 }
 
-# CARD <- processOBO('data/aro.obo')
-# CARD <- processOBO('data/testset.obo')
+# OBO_filepath <- '~/Downloads/card-ontology/aro.obo'
+# CARD <- processOBO(OBO_filepath)
+# test <- readRDS('~/Dropbox/Co-occur_ARGs/data/arg_phy_updated.RDS')@tax_table[,4]
+# classify_ARG_mechanism(test)
+# 
 # unique(classify_ARG_genes(test))
 # save(CARD, file = 'R/sysdata.rda')
-# 
-# OBO_filepath <- 'data/testset.obo'
-# OBO_filepath <- 'data/aro.obo'
+

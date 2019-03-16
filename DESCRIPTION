@@ -8,7 +8,9 @@ Depends:
     R (>= 3.2.2)
 Imports:
 	utils,
-	stringr
+	stringr,
+	RColorBrewer,
+	grDevices
 LinkingTo: 
 Suggests:
     knitr,

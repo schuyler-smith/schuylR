@@ -57,7 +57,7 @@ read_quality_report <- function(file_path, q = 25, k = 2, n = 5e+05, cores = 1){
       # averages <- rowsum(df$Score * df$Count, df$Cycle)/
       # rowsum(df$Count, df$Cycle)
       q_length <- length(averages)
-      for(cycle in seq_along(averages)){
+      for(cycle in seq(150, length(averages))){
         if(mean(averages[cycle:(cycle+(k))], na.rm = T) < q){
           q_length <- cycle
           break

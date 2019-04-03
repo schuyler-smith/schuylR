@@ -15,6 +15,8 @@ read_quality_report(path, q, n, k)
 \item{k}{number of bases beyond the current to consider for quality cutoff.}
 
 \item{n}{The number of records to sample from the fastq file.}
+
+\item{cores}{The number of CPU cores/threads to use.}
 }
 \value{
 data.table

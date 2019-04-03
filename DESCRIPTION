@@ -11,6 +11,7 @@ Imports:
 	stringr,
 	RColorBrewer,
 	grDevices,
+	doParallel,
 	ShortRead
 LinkingTo: 
 Suggests:

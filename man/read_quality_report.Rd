@@ -4,10 +4,10 @@
 \alias{read_quality_report}
 \title{read_quality_report}
 \usage{
-read_quality_report(path, q, n, k)
+read_quality_report(file_path, q, n, k)
 }
 \arguments{
-\item{path}{File path(s) to fastq or fastq.gz file(s).}
+\item{file_path}{File path(s) to fastq or fastq.gz file(s).}
 
 \item{q}{Quality score cutoff for the read. Will look at the mean average score for 
 \code{k} bases beyond where the potential read length cutoff would be recommended.}

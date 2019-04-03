@@ -3,8 +3,8 @@
 #' Processes fastq files to look at read counts, read lengths,
 #' and at what read cycle the quality drops below the \code{q}
 #' quality threshold.
-#' @usage read_quality_report(path, q, n, k)
-#' @param path File path(s) to fastq or fastq.gz file(s).
+#' @usage read_quality_report(file_path, q, n, k)
+#' @param file_path File path(s) to fastq or fastq.gz file(s).
 #' @param q Quality score cutoff for the read. Will look at the mean average score for 
 #' \code{k} bases beyond where the potential read length cutoff would be recommended.
 #' @param k number of bases beyond the current to consider for quality cutoff.
@@ -16,12 +16,12 @@
 #' @export
 #' @return data.table
 
-read_quality_report <- function(path, q = 25, k = 2, n = 5e+05, cores = 1){
+read_quality_report <- function(file_path, q = 25, k = 2, n = 5e+05, cores = 1){
   if(cores == 0){cores <- detectCores()-1}
   if(cores == 1){
     read_report <- data.table(lane = character(), count = numeric(), 
                               length = numeric(), quality_length = numeric())
-    for(file in path[!is.na(path)]){
+    for(file in file_path[!is.na(file_path)]){
       srqa <- ShortRead::qa(file, n = n)
       df <- srqa[["perCycle"]]$quality
       read_counts <- sum(srqa[["readCounts"]]$read)
@@ -44,7 +44,7 @@ read_quality_report <- function(path, q = 25, k = 2, n = 5e+05, cores = 1){
     cl <- makeCluster(cores, type="FORK")  
     registerDoParallel(cl)
     on.exit(stopCluster(cl))
-    read_report <- foreach(i = seq_along(path[!is.na(path)]), .combine = 'rbind') %dopar% {
+    read_report <- foreach(i = seq_along(file_path[!is.na(file_path)]), .combine = 'rbind') %dopar% {
       file = path[i]
       srqa <- ShortRead::qa(file, n = n)
       df <- srqa[["perCycle"]]$quality

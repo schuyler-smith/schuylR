@@ -11,8 +11,10 @@
 #' @param n The number of records to sample from the fastq file.
 #' @param cores The number of CPU cores/threads to use.
 #' @import data.table
-#' @import doParallel
 #' @import parallel
+#' @import doParallel
+#' @import foreach
+#' @import iterators
 #' @export
 #' @return data.table
 

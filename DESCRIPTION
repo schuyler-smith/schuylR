@@ -13,6 +13,8 @@ Imports:
 	grDevices,
 	parallel,
 	doParallel,
+	foreach,
+	iterators,
 	ShortRead
 LinkingTo: 
 Suggests:

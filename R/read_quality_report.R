@@ -41,6 +41,7 @@ read_quality_report <- function(path, q = 25, k = 2, n = 5e+05, cores = 1){
   } else {
     cl <- makeCluster(cores, type="FORK")  
     registerDoParallel(cl)
+    on.exit(stopCluster(cl))
     read_report <- foreach(i = seq_along(path[!is.na(path)]), .combine = 'rbind') %dopar% {
       file = path[i]
       srqa <- ShortRead::qa(file, n = n)

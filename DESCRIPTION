@@ -5,12 +5,13 @@ Author: Schuyler Smith <sdsmith@iastate.edu>
 Maintainer: Schuyler Smith <sdsmith@iastate.edu>
 Description: Various R Functions that needed a home.
 Depends:
-    R (>= 3.2.2)
+    R (>= 3.2)
 Imports:
 	utils,
 	stringr,
 	RColorBrewer,
 	grDevices,
+	parallel,
 	doParallel,
 	ShortRead
 LinkingTo: 

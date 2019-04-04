@@ -20,7 +20,7 @@ read_quality_report <- function(path, q = 25, k = 2, n = 5e+05, cores = 1){
   if(cores != 1){require(doParallel)}
   if(cores == 0){cores <- detectCores()-1}
   if(cores == 1){
-    read_report <- data.table(lane = character(), count = numeric(), 
+    read_report <- data.table(sample = character(), count = numeric(), 
                               length = numeric(), quality_length = numeric())
     for(file in path[!is.na(path)]){
       srqa <- ShortRead::qa(file, n = n)
@@ -38,7 +38,7 @@ read_quality_report <- function(path, q = 25, k = 2, n = 5e+05, cores = 1){
           break
         }
       }
-      read_report <- rbind(read_report, list(basename(file), read_counts, 
+      read_report <- rbind(read_report, list(strsplit(basename(file), "_")[[1]][1], read_counts, 
                                              length(averages), q_length))
     }
   } else {
@@ -62,7 +62,7 @@ read_quality_report <- function(path, q = 25, k = 2, n = 5e+05, cores = 1){
           break
         }
       }
-      return(data.table(lane = basename(file), count = read_counts, length = length(averages), quality_length = q_length))
+      return(data.table(sample = strsplit(basename(file), "_")[[1]][1], count = read_counts, length = length(averages), quality_length = q_length))
     }  
   }
   return(read_report)

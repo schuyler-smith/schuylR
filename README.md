@@ -1,5 +1,7 @@
 
 ## `schuylR`
+[![Travis Build
+Status](https://travis-ci.org/schuyler-smith/schuylR.svg?branch=master)](https://github.com/schuyler-smith/schuylR)
 
 A compilation of various R functions that I like.
 
@@ -12,12 +14,4 @@ library(schuylR)
 ```
 
 *for WINDOWS you need to install <a href="https://cran.r-project.org/bin/windows/Rtools/" target="_blank" >Rtools</a>, when prompted, select `add rtools to system PATH`.*
-
-## Functions
-
-Call			 | Use
----------------- | ------------------------------------------------
-classify_ARG_codes | classifies ARG codes into their antibiotic resistance categories
-row_compare      | checks if rows of two dataframes are identical
-unload_all_packages | un-lbraries all library'd packages from your environment (excluding base packages)
 

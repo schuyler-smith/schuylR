@@ -12,6 +12,7 @@
 #' multiple columns and they will be combined into a new column.
 #' @import phyloseq
 #' @return string
+#' @export
 
 check_numeric_treatment <- function(phyloseq_obj, ...){
   treatments <- list(...)
@@ -38,6 +39,7 @@ check_numeric_treatment <- function(phyloseq_obj, ...){
 #' by.
 #' @import phyloseq
 #' @return string
+#' @export
 
 check_numeric_classification <- function(phyloseq_obj, ...){
   classifications <- list(...)

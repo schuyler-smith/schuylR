@@ -12,7 +12,8 @@ Imports:
 	RColorBrewer,
 	grDevices,
 	parallel,
-	doParallel
+	doParallel,
+	phyloseq
 LinkingTo: 
 Suggests:
     knitr,

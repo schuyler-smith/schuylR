@@ -7,6 +7,7 @@ Description: Various R Functions that needed a home.
 Depends:
     R (>= 3.2)
 Imports:
+  data.table,
 	utils,
 	stringr,
 	RColorBrewer,

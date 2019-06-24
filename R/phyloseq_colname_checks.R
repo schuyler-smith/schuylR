@@ -14,14 +14,25 @@
 #' @return string
 #' @export
 
-check_numeric_treatment <- function(phyloseq_obj, ...){
+check_numeric_treatment <- function(phyloseq_obj, ...) {
   treatments <- list(...)
-  if(any(unlist(sapply(treatments, is.null))) | any(unlist(sapply(treatments, is.na)))){
+  if (any(unlist(lapply(treatments, is.null))) |
+      any(unlist(lapply(treatments, is.na)))) {
     return(NULL)
   } else {
-    return(unlist(sapply(treatments, FUN = function(treatment){
-      colnames(access(phyloseq_obj, 'sam_data')[,treatment])
-    })))
+    return(tryCatch({
+      unlist(lapply(
+        treatments,
+        FUN = function(treatment) {
+          colnames(access(phyloseq_obj, 'sam_data')[, treatment])
+        }
+      ))
+    }, error = function(e) {
+      stop(
+        "`treatment` must be at least one column name, or index, from the sample_data()",
+        call. = FALSE
+      )
+    }))
   }
 }
 
@@ -41,13 +52,24 @@ check_numeric_treatment <- function(phyloseq_obj, ...){
 #' @return string
 #' @export
 
-check_numeric_classification <- function(phyloseq_obj, ...){
+check_numeric_classification <- function(phyloseq_obj, ...) {
   classifications <- list(...)
-  if(any(unlist(sapply(classifications, is.null))) | any(unlist(sapply(classifications, is.na)))){
+  if (any(unlist(lapply(classifications, is.null))) |
+      any(unlist(lapply(classifications, is.na)))) {
     return(NULL)
   } else {
-    return(unlist(sapply(classifications, FUN = function(classification){
-      colnames(access(phyloseq_obj, 'tax_table')[,classification])
-    })))
+    return(tryCatch({
+      unlist(lapply(
+        classifications,
+        FUN = function(classification) {
+          colnames(access(phyloseq_obj, 'tax_table')[, classification])
+        }
+      ))
+    }, error = function(e) {
+      stop(
+        "taxa_filter(): `classification` must be at least one column name, or index, from the tax_table()",
+        call. = FALSE
+      )
+    }))
   }
 }

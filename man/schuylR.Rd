@@ -3,7 +3,6 @@
 \docType{package}
 \name{schuylR}
 \alias{schuylR}
-\alias{schuylR-package}
 \title{schuylR-package}
 \description{
 schuylR is a conglomeration of functions written to do

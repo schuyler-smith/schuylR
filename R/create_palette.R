@@ -17,12 +17,13 @@
 create_palette <- function(color_count, colors = 'default'){
   options(warn = -1)
   mycolors <- c(
-    "#A8B1CC", "#E69F00", "#56B4E9", "#009E73",
-    "#F0E442", "#0072B2", "#D55E00", "#9EDA8F",
-    "#CC79A7", "#757575", "#DE9861", "#A6CBE0",
+    "#565656", "#E69F00", "#56B4E9", "#009E73", 
+    "#F0E442", "#0072B2", "#D55E00", "#CC79A7", 
+    "#9EDA8F", "#757575", "#DE9861", "#A6CBE0",
     "#B275D8", "#82BB47", "#e0503a", "#F5E56C",
-    "#949696", "#4989DE", "#E2E2E2", "#565656",
+    "#949696", "#4989DE", "#E2E2E2", 
     "#F7B04C", "#696bb2")
+  #"#A8B1CC"
   # image(1:length(mycolors), 1, as.matrix(1:length(mycolors)), col=mycolors, xlab="", ylab = "", xaxt = "n", yaxt = "n", bty = "n")
   if(any(colors == 'default')){
     colors <- mycolors

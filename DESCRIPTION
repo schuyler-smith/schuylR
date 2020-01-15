@@ -10,11 +10,13 @@ Imports:
   data.table,
 	utils,
 	stringr,
+	ggplot2,
 	RColorBrewer,
 	grDevices,
 	parallel,
 	doParallel,
-	phyloseq
+	phyloseq,
+	ShortRead (>= 1.32.0)
 LinkingTo: 
 Suggests:
     knitr,
@@ -25,4 +27,4 @@ VignetteBuilder: knitr
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.0
+RoxygenNote: 7.0.2

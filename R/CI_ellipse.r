@@ -17,9 +17,7 @@ CI_ellipse <- function(points,
   theta <- (0:99) * 2 * pi / 100
   unit_circle <- cbind(cos(theta), sin(theta))
   if (!is.null(groups)) {
-    group_members <- table(points[, groups])
-    group_members <- as.numeric(names(group_members[group_members >= 3]))
-    for (group in group_members) {
+    for (group in unique(points[, groups])) {
       sub_points <- points[points[, groups] == group, c('x', 'y')]
       ellipse_info <- cov.wt(sub_points[, c('x', 'y')])
       shape <- ellipse_info$cov

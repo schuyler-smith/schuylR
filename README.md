@@ -8,8 +8,7 @@ A compilation of various R functions that I like.
 ## Installation
 
 ```
-library(devtools)
-install_github('schuyler-smith/schuylR')
+devtools::install_github('schuyler-smith/schuylR')
 library(schuylR)
 ```
 

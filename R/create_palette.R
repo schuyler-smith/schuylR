@@ -1,20 +1,20 @@
 #' Function for creating color palettes for graphs.
 #'
 #' Creates color palettes.
-
-#' @usage create_palette(color_count, colors = 'default')
+#' @usage create_palette(color_count, colors = 'default', preview = FALSE)
 #' @param color_count Number of colors to choose for palette.
 #' @param colors Name of a color set from the
 #' \link[=RColorBrewer]{RColorBrewer} package or a vector palete of R-accepted
 #' colors.
+#' @param preview If TRUE, prints a figure showing the color palette.
 #' @import RColorBrewer
-#' @import grDevices
+#' @importFrom grDevices colorRampPalette
+#' @importFrom graphics image
 #' @return palette
 #' @export
 #' 
 
-
-create_palette <- function(color_count, colors = 'default'){
+create_palette <- function(color_count, colors = 'default', preview = FALSE){
   mycolors <- c(
     "#757575", "#E69F00", "#56B4E9", "#009E73", 
     "#F0E442", "#0072B2", "#D55E00", "#CC79A7", 
@@ -23,24 +23,23 @@ create_palette <- function(color_count, colors = 'default'){
     "#949696", "#4989DE", "#E2E2E2", 
     "#F7B04C", "#696bb2")
   #"#A8B1CC"
-  # image(1:length(mycolors), 1, as.matrix(1:length(mycolors)), col=mycolors, xlab="", ylab = "", xaxt = "n", yaxt = "n", bty = "n")
   if(any(colors == 'default')){
     colors <- mycolors
     if(color_count <= length(colors)){
-      return(colors[seq(color_count)])
+      palette <- colors[seq(color_count)]
     }
-  }
-  if(any(colors %in% 'rev') | any(colors %in% 'reverse')){
-    colors <- rev(mycolors)
-    if(color_count <= length(mycolors)){
-      return(rev(mycolors[seq(color_count)]))
-    }
-  }
-  if(any(!(colors %in% colors()))){
-    if(any(colors %in% rownames(brewer.pal.info))){
-      getPalette <- colorRampPalette(brewer.pal(min(c(color_count,
-                                                      brewer.pal.info[rownames(brewer.pal.info) == colors, 1])), colors))
-    } else { getPalette <- colorRampPalette(colors)}
-  } else { getPalette <- colorRampPalette(colors)}
-  return(getPalette(color_count))
+  } else if(any(!(colors %in% colors()))){
+    if(any(colors %in% rownames(RColorBrewer::brewer.pal.info))){
+      palette <- grDevices::colorRampPalette(
+        RColorBrewer::brewer.pal(min(c(color_count, 
+                   RColorBrewer::brewer.pal.info[rownames(RColorBrewer::brewer.pal.info) == colors, 1])), 
+                   colors))(color_count)
+    } else { palette <- grDevices::colorRampPalette(colors)(color_count)}
+  } else { palette <- grDevices::colorRampPalette(colors)(color_count)}
+  if(preview){print(graphics::image(1:length(palette), 1, as.matrix(1:length(palette)), 
+                          col=palette, 
+                          xlab="", ylab = "", 
+                          xaxt = "n", yaxt = "n", 
+                          bty = "n"))}
+  return(palette)
 }

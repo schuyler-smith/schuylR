@@ -35,3 +35,5 @@ build
 src-i386/
 src-x64/
 schuylR*.tar.gz
+/doc/
+/Meta/

@@ -4,7 +4,7 @@
 \alias{plot_sequence_quality}
 \title{Plot Sequence Quality}
 \usage{
-sequence_quality(file)
+plot_sequence_quality(file)
 }
 \arguments{
 \item{file}{a list created by sequence_quality()}
@@ -13,5 +13,5 @@ sequence_quality(file)
 ggplot-object
 }
 \description{
-Creates plots of sequence qualitires
+Creates plots of sequence qualities
 }

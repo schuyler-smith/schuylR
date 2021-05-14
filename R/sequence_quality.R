@@ -52,8 +52,8 @@ sequence_quality <- function(file, n = 5e+05){
 
 #' Plot Sequence Quality
 #'
-#' Creates plots of sequence qualitires
-#' @usage sequence_quality(file)
+#' Creates plots of sequence qualities
+#' @usage plot_sequence_quality(file)
 #' @param file a list created by sequence_quality()
 #' @return ggplot-object
 #' @import ggplot2

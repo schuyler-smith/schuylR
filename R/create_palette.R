@@ -22,17 +22,19 @@ create_palette <- function (color_count, colors = "default", preview = FALSE)
                 "#DE9861", "#565656", "#A6CBE0", "#B275D8", "#82BB47", 
                 "#e0503a", "#F5E56C", "#949696", "#4989DE", "#E2E2E2", 
                 "#F7B04C", "#696bb2")
-  } else if(any(!(colors %in% colors()))) {
+  } else if (any(!(colors %in% colors()))) {
     if (any(colors %in% rownames(RColorBrewer::brewer.pal.info))) {
       colors <- RColorBrewer::brewer.pal(min(c(color_count, 
-                        RColorBrewer::brewer.pal.info[rownames(RColorBrewer::brewer.pal.info) == colors, 1])), colors)
+                                               RColorBrewer::brewer.pal.info[rownames(RColorBrewer::brewer.pal.info) == 
+                                                                               colors, 1])), colors)
     }
   }
-  colors <- grDevices::colorRampPalette(colors)(color_count)
+  if(length(colors) < color_count){colors <- (grDevices::colorRampPalette(colors))(color_count)}
+  colors <- colors[seq(color_count)]
   if (preview) {
     graphics::image(1:length(colors), 1, as.matrix(1:length(colors)), 
-                          col = colors, xlab = "", ylab = "", xaxt = "n", 
-                          yaxt = "n", bty = "n")
+                    col = colors, xlab = "", ylab = "", xaxt = "n", 
+                    yaxt = "n", bty = "n")
   }
   return(colors)
 }
